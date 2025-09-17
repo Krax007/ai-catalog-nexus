@@ -114,6 +114,8 @@ const Index = () => {
           onClose={() => setSidebarOpen(false)}
           selectedCategories={selectedCategories}
           onCategoryToggle={handleCategoryToggle}
+          showFavorites={showFavorites}
+          onFavoritesToggle={() => setShowFavorites(!showFavorites)}
         />
         
         <main className="flex-1 container mx-auto px-4 py-6 lg:ml-64">
@@ -122,13 +124,14 @@ const Index = () => {
             onToolClick={handleToolLaunch}
           />
           
-          <div className="mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">
-              {searchQuery ? `Search Results` : `All AI Tools`}
+              {showFavorites ? 'Favorite AI Tools' : searchQuery ? `Search Results` : `All AI Tools`}
               <span className="text-sm font-normal text-muted-foreground ml-2">
                 ({filteredTools.length} tools)
               </span>
             </h2>
+            <ViewSwitcher view={view} onViewChange={setView} />
           </div>
           
           {filteredTools.length === 0 ? (
@@ -138,12 +141,15 @@ const Index = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+            <div className={view === 'compact' ? "flex flex-col gap-3 mb-8" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8"}>
               {filteredTools.map(tool => (
                 <AIToolCard
                   key={tool.id}
                   tool={tool}
                   onLaunch={handleToolLaunch}
+                  view={view}
+                  isFavorite={favorites.includes(tool.id)}
+                  onToggleFavorite={handleToggleFavorite}
                 />
               ))}
             </div>
