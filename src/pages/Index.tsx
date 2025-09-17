@@ -108,7 +108,7 @@ const Index = () => {
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
       />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative">
         <Sidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -118,42 +118,44 @@ const Index = () => {
           onFavoritesToggle={() => setShowFavorites(!showFavorites)}
         />
         
-        <main className="flex-1 container mx-auto px-4 py-6 lg:ml-64">
-          <RecentlyUsed 
-            tools={recentlyUsed}
-            onToolClick={handleToolLaunch}
-          />
-          
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">
-              {showFavorites ? 'Favorite AI Tools' : searchQuery ? `Search Results` : `All AI Tools`}
-              <span className="text-sm font-normal text-muted-foreground ml-2">
-                ({filteredTools.length} tools)
-              </span>
-            </h2>
-            <ViewSwitcher view={view} onViewChange={setView} />
+        <main className="flex-1 w-full overflow-x-hidden px-4 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <RecentlyUsed 
+              tools={recentlyUsed}
+              onToolClick={handleToolLaunch}
+            />
+            
+            <div className="mb-4 flex items-center justify-between px-2">
+              <h2 className="text-xl font-semibold">
+                {showFavorites ? 'Favorite AI Tools' : searchQuery ? `Search Results` : `All AI Tools`}
+                <span className="text-sm font-normal text-muted-foreground ml-2">
+                  ({filteredTools.length} tools)
+                </span>
+              </h2>
+              <ViewSwitcher view={view} onViewChange={setView} />
+            </div>
+            
+            {filteredTools.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">
+                  No AI tools found matching your criteria.
+                </p>
+              </div>
+            ) : (
+              <div className={view === 'compact' ? "flex flex-col gap-3 mb-8 px-2" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8 justify-items-center px-2"}>
+                {filteredTools.map(tool => (
+                  <AIToolCard
+                    key={tool.id}
+                    tool={tool}
+                    onLaunch={handleToolLaunch}
+                    view={view}
+                    isFavorite={favorites.includes(tool.id)}
+                    onToggleFavorite={handleToggleFavorite}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-          
-          {filteredTools.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">
-                No AI tools found matching your criteria.
-              </p>
-            </div>
-          ) : (
-            <div className={view === 'compact' ? "flex flex-col gap-3 mb-8" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8"}>
-              {filteredTools.map(tool => (
-                <AIToolCard
-                  key={tool.id}
-                  tool={tool}
-                  onLaunch={handleToolLaunch}
-                  view={view}
-                  isFavorite={favorites.includes(tool.id)}
-                  onToggleFavorite={handleToggleFavorite}
-                />
-              ))}
-            </div>
-          )}
         </main>
       </div>
       

@@ -15,20 +15,21 @@ interface SidebarProps {
 export function Sidebar({ isOpen, onClose, selectedCategories, onCategoryToggle, showFavorites, onFavoritesToggle }: SidebarProps) {
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay - only on mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden animate-fade-in"
           onClick={onClose}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - responsive positioning */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 h-full w-64 bg-sidebar-background border-r border-sidebar-border transition-transform duration-300",
-          "lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)]",
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          "fixed left-0 top-0 z-40 h-full w-64 bg-sidebar-background border-r border-sidebar-border",
+          "transition-all duration-300 ease-in-out",
+          "lg:relative lg:z-0",
+          isOpen ? "translate-x-0 animate-slide-in-left" : "-translate-x-full lg:translate-x-0"
         )}
       >
         <div className="flex flex-col h-full">

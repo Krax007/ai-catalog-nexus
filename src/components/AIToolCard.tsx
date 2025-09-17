@@ -22,7 +22,7 @@ export function AIToolCard({ tool, onLaunch, view, isFavorite, onToggleFavorite 
 
   if (view === 'compact') {
     return (
-      <div className="group flex items-center gap-3 p-3 rounded-2xl bg-card hover:bg-card-hover border border-border hover:border-primary/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg animate-fade-in">
+      <div className="group flex items-center gap-3 p-3 rounded-2xl bg-card hover:bg-card-hover border border-border hover:border-primary/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg animate-fade-in w-full">
         <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 transition-all duration-300">
           <Icon className="h-5 w-5 text-primary" />
         </div>
