@@ -1,0 +1,74 @@
+import { categories, type Category } from "@/data/aiTools";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedCategories: Category[];
+  onCategoryToggle: (category: Category) => void;
+}
+
+export function Sidebar({ isOpen, onClose, selectedCategories, onCategoryToggle }: SidebarProps) {
+  return (
+    <>
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-40 h-full w-64 bg-sidebar-background border-r border-sidebar-border transition-transform duration-300",
+          "lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)]",
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        )}
+      >
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between p-4 border-b border-sidebar-border lg:hidden">
+            <h2 className="text-lg font-semibold">Filters</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="hover:bg-sidebar-accent"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+            <h3 className="text-sm font-semibold text-muted-foreground mb-3">Categories</h3>
+            <div className="space-y-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => onCategoryToggle(category)}
+                  className={cn(
+                    "category-pill w-full text-left",
+                    selectedCategories.includes(category) && "active"
+                  )}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-4 border-t border-sidebar-border">
+            <p className="text-xs text-muted-foreground text-center">
+              {selectedCategories.length > 0
+                ? `${selectedCategories.length} filter${selectedCategories.length > 1 ? 's' : ''} active`
+                : "No filters active"}
+            </p>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}
