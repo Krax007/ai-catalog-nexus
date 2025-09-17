@@ -1,5 +1,5 @@
 import { categories, type Category } from "@/data/aiTools";
-import { X } from "lucide-react";
+import { X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -8,9 +8,11 @@ interface SidebarProps {
   onClose: () => void;
   selectedCategories: Category[];
   onCategoryToggle: (category: Category) => void;
+  showFavorites: boolean;
+  onFavoritesToggle: () => void;
 }
 
-export function Sidebar({ isOpen, onClose, selectedCategories, onCategoryToggle }: SidebarProps) {
+export function Sidebar({ isOpen, onClose, selectedCategories, onCategoryToggle, showFavorites, onFavoritesToggle }: SidebarProps) {
   return (
     <>
       {/* Overlay */}
@@ -43,6 +45,22 @@ export function Sidebar({ isOpen, onClose, selectedCategories, onCategoryToggle 
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+            {/* Favorites Section */}
+            <div className="mb-6">
+              <h3 className="text-sm font-semibold text-muted-foreground mb-3">Quick Access</h3>
+              <button
+                onClick={onFavoritesToggle}
+                className={cn(
+                  "category-pill w-full text-left flex items-center gap-2 transition-all duration-300 hover:scale-[1.02]",
+                  showFavorites && "active bg-gradient-to-r from-primary/20 to-primary/10"
+                )}
+              >
+                <Heart className={cn("h-4 w-4", showFavorites && "fill-current")} />
+                Favorites
+              </button>
+            </div>
+
+            {/* Categories Section */}
             <h3 className="text-sm font-semibold text-muted-foreground mb-3">Categories</h3>
             <div className="space-y-2">
               {categories.map((category) => (
@@ -50,7 +68,7 @@ export function Sidebar({ isOpen, onClose, selectedCategories, onCategoryToggle 
                   key={category}
                   onClick={() => onCategoryToggle(category)}
                   className={cn(
-                    "category-pill w-full text-left",
+                    "category-pill w-full text-left transition-all duration-300 hover:scale-[1.02]",
                     selectedCategories.includes(category) && "active"
                   )}
                 >

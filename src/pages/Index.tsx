@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { RecentlyUsed } from "@/components/RecentlyUsed";
 import { AIToolCard } from "@/components/AIToolCard";
+import { ViewSwitcher } from "@/components/ViewSwitcher";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -11,8 +12,11 @@ const Index = () => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [recentlyUsed, setRecentlyUsed] = useState<AITool[]>([]);
+  const [view, setView] = useState<'grid' | 'compact'>('grid');
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [showFavorites, setShowFavorites] = useState(false);
 
-  // Load recently used from localStorage
+  // Load recently used and favorites from localStorage
   useEffect(() => {
     const stored = localStorage.getItem("recentlyUsed");
     if (stored) {
@@ -27,11 +31,25 @@ const Index = () => {
         console.error("Failed to load recently used", e);
       }
     }
+    
+    const storedFavs = localStorage.getItem("favorites");
+    if (storedFavs) {
+      try {
+        setFavorites(JSON.parse(storedFavs));
+      } catch (e) {
+        console.error("Failed to load favorites", e);
+      }
+    }
   }, []);
 
-  // Filter tools based on search and categories
+  // Filter tools based on search, categories, and favorites
   const filteredTools = useMemo(() => {
     let filtered = aiTools;
+    
+    // Apply favorites filter first
+    if (showFavorites) {
+      filtered = filtered.filter(tool => favorites.includes(tool.id));
+    }
     
     // Apply category filter
     if (selectedCategories.length > 0) {
@@ -51,7 +69,7 @@ const Index = () => {
     }
     
     return filtered;
-  }, [selectedCategories, searchQuery]);
+  }, [selectedCategories, searchQuery, showFavorites, favorites]);
 
   const handleCategoryToggle = (category: Category) => {
     setSelectedCategories(prev =>
@@ -72,6 +90,15 @@ const Index = () => {
     
     // Open tool in new tab
     window.open(tool.url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleToggleFavorite = (tool: AITool) => {
+    const newFavorites = favorites.includes(tool.id)
+      ? favorites.filter(id => id !== tool.id)
+      : [...favorites, tool.id];
+    
+    setFavorites(newFavorites);
+    localStorage.setItem("favorites", JSON.stringify(newFavorites));
   };
 
   return (
