@@ -45,7 +45,7 @@ export function Header({ onSearch, onToggleSidebar }: HeaderProps) {
               variant="ghost"
               size="icon"
               onClick={onToggleSidebar}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:rotate-12 active:scale-95"
             >
               <Menu className="h-5 w-5" />
             </Button>
