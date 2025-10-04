@@ -64,7 +64,7 @@ export function AIToolCard({ tool, onLaunch, view, isFavorite, onToggleFavorite 
   }
 
   return (
-    <div className="ai-card group animate-fade-in">
+    <div className="ai-card group animate-fade-in h-full flex flex-col">
       <div className="absolute top-3 right-3 z-10">
         <button
           onClick={(e) => {
@@ -96,13 +96,13 @@ export function AIToolCard({ tool, onLaunch, view, isFavorite, onToggleFavorite 
         </div>
       </div>
       
-      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+      <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-1">
         {tool.description}
       </p>
       
       <button
         onClick={() => onLaunch(tool)}
-        className="btn-launch w-full text-sm flex items-center justify-center gap-2"
+        className="btn-launch w-full text-sm flex items-center justify-center gap-2 mt-auto"
       >
         Launch
         <ExternalLink className="h-3 w-3" />

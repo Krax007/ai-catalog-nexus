@@ -142,7 +142,7 @@ const Index = () => {
                 </p>
               </div>
             ) : (
-              <div className={view === 'compact' ? "flex flex-col gap-3 mb-8 px-2" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8 justify-items-center px-2"}>
+              <div className={view === 'compact' ? "flex flex-col gap-3 mb-8" : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8"}>
                 {filteredTools.map(tool => (
                   <AIToolCard
                     key={tool.id}
